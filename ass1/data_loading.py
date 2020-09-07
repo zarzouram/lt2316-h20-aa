@@ -120,7 +120,7 @@ class DataLoader(DataLoaderBase):
         pass
 
 
-    def plot_ner_sample_distribution(self):
+    def plot_ner_per_sample_distribution(self):
         # Should plot a histogram displaying the distribution of number of NERs in sentences
         # e.g. how many sentences has 1 ner, 2 ner and so on
         pass

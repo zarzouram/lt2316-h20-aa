@@ -126,7 +126,7 @@ class DataLoader(DataLoaderBase):
         pass
 
 
-    def plot_ner_cooccurence_ven_diagram(self):
+    def plot_ner_cooccurence_venndiagram(self):
         # Should plot a ven-diagram displaying how the ner labels co-occur
         pass
 

@@ -4,10 +4,12 @@ import random
 import pandas as pd
 
 
-class DataLoader:
+class DataLoaderBase:
 
-    def __init__(self, data_path:str):
-        self._parse_xml_data(data_path)
+    #### DO NOT CHANGE ANYTHING IN THIS CLASS ### !!!!
+
+    def __init__(self, data_dir:str):
+        self._parse_xml_data(data_dir)
         assert list(self.data_df.columns) == [
                                                 "sentence_id",
                                                 "token_id",
@@ -58,6 +60,9 @@ class DataLoader:
 
 
     def get_random_sample(self):
+        # DO NOT TOUCH THIS
+        # simply picks a random sample from the dataset, labels and formats it.
+        # Meant to be used as a naive check to see if the data looks ok
         sentence_id = random.choice(list(self.data_df["sentence_id"].unique()))
         sample_ners = self.ner_df[self.ner_df["sentence_id"]==sentence_id]
         sample_tokens = self.data_df[self.data_df["sentence_id"]==sentence_id]
@@ -80,7 +85,21 @@ class DataLoader:
         return sample.rstrip()
 
 
-    def _parse_xml_data(self,file_path):
+
+class DataLoader(DataLoaderBase):
+
+
+    def __init__(self, data_dir:str):
+        super().__init__(data_dir=data_dir)
+
+
+    def _parse_xml_data(self,data_dir):
+        # Should parse data in the data_dir, create two dataframes with the format specified in
+        # __init__(), and set all the variables so that run.ipynb run as it is.
+        #
+        # NOTE! I strongly suggest that you create multiple functions for taking care
+        # of the parsing needed here. Avoid create a huge block of code here and try instead to 
+        # identify the seperate functions needed.
         pass
 
 

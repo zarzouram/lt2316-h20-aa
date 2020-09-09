@@ -2,6 +2,7 @@
 #basics
 import random
 import pandas as pd
+import torch
 
 
 class DataLoaderBase:
@@ -24,40 +25,7 @@ class DataLoaderBase:
                                                 "char_start_id",
                                                 "char_end_id",
                                                 ]
-
-
-    @property
-    def max_sample_length(self):
-        return self._max_sample_length
-
-    @property
-    def ner2id(self):
-        return self._ner2id
-
-    @property
-    def id2ner(self):
-        return self._id2ner
-
-    @property
-    def vocab(self):
-        return list(self._id2word.values())
-
-    @property
-    def word2id(self):
-        return self._word2id
-
-    @property
-    def id2word(self):
-        return self._id2word
-
-    @property
-    def data_df(self):
-        return self._data_df
-
-    @property
-    def ner_df(self):
-        return self._ner_df
-
+        
 
     def get_random_sample(self):
         # DO NOT TOUCH THIS
@@ -107,7 +75,6 @@ class DataLoader(DataLoaderBase):
         # Should return a tensor containing the ner labels for all samples in each split.
         # the tensors should have the following following dimensions:
         # (NUMBER_SAMPLES, MAX_SAMPLE_LENGTH)
-        pass
 
 
     def plot_split_ner_distribution(self):

@@ -31,8 +31,7 @@ Document which feature(s) you use and why.
 
 ### Bonus Part: Extended Data Exploration
 
-As a bonus you are asked to extend the data exploration. As you might have notices some functions are labled as beloning to the bonus part, these are also the commentes that are commented out in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). So, for the bonus part, fill in the intended functions following the instructions in the comments and uncomment the code in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb).
-
+As a bonus you are asked to extend the data exploration. As you might have notices some functions within [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L89) are labled as beloning to the bonus part, fill these in so they plot whats requested in the comments. Uncomment the lines in the bonus part in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). 
 
 
 If there are any issued with the code as it is, any bug or uncertainties, let me know either on Canvas, email or by making an issue here on github.

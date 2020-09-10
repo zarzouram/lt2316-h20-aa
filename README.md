@@ -1,6 +1,6 @@
 # NER Assignment
 
-In this assignment you will working with the [Drug-Drug Interaction Corpus](https://core.ac.uk/download/pdf/82785218.pdf). The assignment will be to proprocess the data for Named Entity Recognition, i.e. to recognize pharmacological substances in text. This includes reading, parsing and structuring the data, data exploration and lastly creating features. 
+In this assignment you will be working with the [Drug-Drug Interaction Corpus](https://core.ac.uk/download/pdf/82785218.pdf). The assignment will be to proprocess the data for Named Entity Recognition, i.e. to recognize pharmacological substances in text. This includes reading, parsing and structuring the data, data exploration and lastly creating features. 
 
 Note that this dataset include data for two tasks, NER and NER-linking, but you will only be using it for NER. 
 

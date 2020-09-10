@@ -20,7 +20,7 @@ Do not forget to document the choices you make with explanations why if needed.
 For splitting the data use the premade Train/Test splits given and then take a part of the training as the val/dev set, as convention.
 
 
-### part 2: Extract Features (8 points)
+### part 2: Extract Features (10 points)
 
 Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L8) as instructed in the comments in the function.
 

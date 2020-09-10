@@ -22,7 +22,7 @@ For splitting the data use the premade Train/Test splits given and then take a p
 
 ### part 2: Extract Features
 
-Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L6) as instructed in the comments in the function.
+Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L8) as instructed in the comments in the function.
 
 In this part you are free to chose any type of feature you like, dont be afraid to be creative ;)! 
 
@@ -34,7 +34,7 @@ Document which feature(s) you use and why.
 As a bonus you are asked to extend the data exploration. As you might have notices some functions within [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L58) are labled as beloning to the bonus part, fill these in so they plot whats requested in the comments. Uncomment the lines in the bonus part in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). 
 
 
-If there are any issued with the code as it is, any bug or uncertainties, let me know either on Canvas, email or by making an issue here on github.
+If there are any issued with the current code, any bug or uncertainties, let me know either on Canvas, email or by making an issue here on github.
 
 Best of luck 
 Axel

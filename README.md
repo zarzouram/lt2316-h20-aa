@@ -15,7 +15,7 @@ I suggest you start by checking [run.ipynb](https://github.com/AxlAlm/ner_assign
 
 In the dataset folder you will find xml files. All these are suppose to be parsed and structured. Fill in the functions in [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L89) as described in the comments. For information how the data should be structured look at assertions in the [DataLoaderBase](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L8)
 
-Do not forget to document the choices you make with explanation why if needed.
+Do not forget to document the choices you make with explanations why if needed.
 
 For splitting the data use the premade Train/Test splits given and then take a part of the training as the val/dev set, as convention.
 

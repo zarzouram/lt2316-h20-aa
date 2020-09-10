@@ -85,11 +85,13 @@ class DataLoader(DataLoaderBase):
 
 
     def plot_sample_length_distribution(self):
+        # FOR BONUS PART!!
         # Should plot a histogram displaying the distribution of sample lengths in number tokens
         pass
 
 
-    def plot_ner_per_sample_distribution(self):
+    def plot_ner_per_sample_distribution(self):        
+        # FOR BONUS PART!!
         # Should plot a histogram displaying the distribution of number of NERs in sentences
         # e.g. how many sentences has 1 ner, 2 ner and so on
         pass

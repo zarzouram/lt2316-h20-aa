@@ -22,11 +22,11 @@ For splitting the data use the premade Train/Test splits given and then take a p
 
 ### part 2: Extract Features
 
-Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L6) as instructed in the comments in the function.
+Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L6) as instructed in the comments in the function.
 
 In this part you are free to chose any type of feature you like, dont be afraid to be creative ;)! 
 
-Document which feature you use and why.
+Document which feature(s) you use and why.
 
 
 ### Bonus Part: Extended Data Exploration

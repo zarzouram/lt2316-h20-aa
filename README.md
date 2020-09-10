@@ -10,9 +10,12 @@ Further information about the task can be found [here](https://www.aclweb.org/an
 
 I suggest you start by checking [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). All work done in this assignment will be to make this file run as it is, except to minor changes which you are asked to make. This will give you a good idea of what is needed to be done.
 
-### Part 1: Load dataset
+### Part 1: Load dataset and explore a bit
 
-Fill in the functions in [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L89) as described in the comments. Do not forget to document the choices you make with explanation why if needed.
+
+In the dataset folder you will find xml files. All these are suppose to be parsed and structured. Fill in the functions in [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L89) as described in the comments. For information how the data should be structured look at assertions in the [DataLoaderBase](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L8)
+
+Do not forget to document the choices you make with explanation why if needed.
 
 For splitting the data use the premade Train/Test splits given and then take a part of the training as the val/dev set, as convention.
 
@@ -29,7 +32,6 @@ Document which feature you use and why.
 ### Bonus Part: Extended Data Exploration
 
 As a bonus you are asked to extend the data exploration. As you might have notices some functions are labled as beloning to the bonus part, these are also the commentes that are commented out in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). So, for the bonus part, fill in the intended functions following the instructions in the comments and uncomment the code in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb).
-
 
 
 

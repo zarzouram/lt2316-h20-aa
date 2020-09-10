@@ -8,7 +8,7 @@ The dataset can be downloaded [here](https://canvas.gu.se/files/3359925/download
 
 Further information about the task can be found [here](https://www.aclweb.org/anthology/S13-2056.pdf) and [here](https://www.cs.york.ac.uk/semeval-2013/task9.html)
 
-I suggest you start by forking the repo and then checking [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). All work done in this assignment will be to make this file run. This will give you a good idea of what is needed to be done. Note that you are not allowed to change anything in run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb) if not explicitly said so.
+I suggest you start by forking the repo and then checking [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). All work done in this assignment will be to make this file run. This will give you a good idea of what is needed to be done. Note that you are not allowed to change anything in  [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb) if not explicitly said so.
 
 ### Part 1: Load dataset and explore a bit (8 Points)
 

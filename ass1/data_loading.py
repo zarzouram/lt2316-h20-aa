@@ -9,8 +9,8 @@ class DataLoaderBase:
 
     #### DO NOT CHANGE ANYTHING IN THIS CLASS ### !!!!
 
-    def __init__(self, data_dir:str):
-        self._parse_xml_data(data_dir)
+    def __init__(self, data_dir:str, device=None):
+        self._parse_data(data_dir)
         assert list(self.data_df.columns) == [
                                                 "sentence_id",
                                                 "token_id",
@@ -25,6 +25,7 @@ class DataLoaderBase:
                                                 "char_start_id",
                                                 "char_end_id",
                                                 ]
+        self.device = device
         
 
     def get_random_sample(self):
@@ -57,11 +58,11 @@ class DataLoaderBase:
 class DataLoader(DataLoaderBase):
 
 
-    def __init__(self, data_dir:str):
-        super().__init__(data_dir=data_dir)
+    def __init__(self, data_dir:str, device=None):
+        super().__init__(data_dir=data_dir, device=device)
 
 
-    def _parse_xml_data(self,data_dir):
+    def _parse_data(self,data_dir):
         # Should parse data in the data_dir, create two dataframes with the format specified in
         # __init__(), and set all the variables so that run.ipynb run as it is.
         #
@@ -75,6 +76,7 @@ class DataLoader(DataLoaderBase):
         # Should return a tensor containing the ner labels for all samples in each split.
         # the tensors should have the following following dimensions:
         # (NUMBER_SAMPLES, MAX_SAMPLE_LENGTH)
+        # NOTE! the labels for each split should be on the GPU
 
 
     def plot_split_ner_distribution(self):
@@ -94,6 +96,7 @@ class DataLoader(DataLoaderBase):
 
 
     def plot_ner_cooccurence_venndiagram(self):
+        # FOR BONUS PART!!
         # Should plot a ven-diagram displaying how the ner labels co-occur
         pass
 

@@ -13,7 +13,7 @@ I suggest you start by forking the repo and then checking [run.ipynb](https://gi
 ### Part 1: Load dataset and explore a bit
 
 
-In the dataset folder you will find xml files. All these are suppose to be parsed and structured. Fill in the functions in [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L58) as described in the comments. For information how the data should be structured look at assertions in the [DataLoaderBase](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L8)
+In the dataset folder you will find xml files. All these are suppose to be parsed and structured. Fill in the functions in [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/aa/data_loading.py#L58) as described in the comments. For information how the data should be structured look at assertions in the [DataLoaderBase](https://github.com/AxlAlm/ner_assignment/blob/master/aa/data_loading.py#L8)
 
 Do not forget to document the choices you make with explanations why if needed.
 
@@ -22,7 +22,7 @@ For splitting the data use the premade Train/Test splits given and then take a p
 
 ### part 2: Extract Features 
 
-Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/feature_extraction.py#L8) as instructed in the comments in the function.
+Now that we have the data we need to extract some features. Fill in [extract_features](https://github.com/AxlAlm/ner_assignment/blob/master/aa/feature_extraction.py#L8) as instructed in the comments in the function.
 
 In this part you are free to chose any type of feature you like, dont be afraid to be creative ;)! 
 
@@ -31,7 +31,7 @@ Document which feature(s) you use and why.
 
 ### Bonus Part: Extended Data Exploration
 
-As a bonus you are asked to extend the data exploration. As you might have notices some functions within [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/ass1/data_loading.py#L58) are labled as beloning to the bonus part, fill these in so they plot whats requested in the comments. Uncomment the lines in the bonus part in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). 
+As a bonus you are asked to extend the data exploration. As you might have notices some functions within [DataLoader](https://github.com/AxlAlm/ner_assignment/blob/master/aa/data_loading.py#L58) are labled as beloning to the bonus part, fill these in so they plot whats requested in the comments. Uncomment the lines in the bonus part in [run.ipynb](https://github.com/AxlAlm/ner_assignment/blob/master/run.ipynb). 
 
 
 If there are any issued with the current code, any bug or uncertainties, let me know either on Canvas, email or by making an issue here on github.

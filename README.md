@@ -3,7 +3,7 @@
 Name: Mohamed Zarzoura
 
 - [1. Notes on Part 1](#1-notes-on-part-1)
-  - [1.1. Important notices](#11-important-notices)
+  - [1.1. Important notes](#11-important-notes)
   - [1.2. Tokenization](#12-tokenization)
   - [1.3. NE labeling](#13-ne-labeling)
   - [1.4. Checking the output](#14-checking-the-output)
@@ -25,7 +25,7 @@ Name: Mohamed Zarzoura
 
 ### 1.1. Important notes
 
-1. PLease run the code using the XML database located under my user folder `/home/guszarzmo@GU.GU.SE/Corpora/DrugDrug-Interaction'. I have made several changes to the files to handle some issues. These issues are discussed in Section [1.5. Issues with data](#15-issues-with-data)
+1. PLease run the code using the XML database located under my user folder `home/guszarzmo@GU.GU.SE/Corpora/DrugDrug-Interaction'. I have made several changes to the files to handle some issues. These issues are discussed in Section [1.5. Issues with data](#15-issues-with-data)
 
 2. Due to the way that I choose to tokenize sentences, the method `<DataLoader>.get_random_sample()` does not provide the expected output. I wrote another method `<DataLoader>.get_random_sample_1()` that provides the same required function. You will find more details in section [1.4. Checking the output](#14-checking-the-output).
 

@@ -5,7 +5,7 @@ Name: Mohamed Zarzoura
 - [1. Notes on Part 1](#1-notes-on-part-1)
   - [1.1. Important notices](#11-important-notices)
   - [1.2. Tokenization](#12-tokenization)
-  - [1.3. NER labeling](#13-ner-labeling)
+  - [1.3. NE labeling](#13-ner-labeling)
   - [1.4. Checking the output](#14-checking-the-output)
   - [1.5. Issues with data](#15-issues-with-data)
     - [1.5.1. Introduction](#151-introduction)
@@ -29,7 +29,7 @@ Name: Mohamed Zarzoura
 
 2. Due to the way that I choose to tokenize sentences, the method `<DataLoader>.get_random_sample()` does not provide the expected output. I wrote another method `<DataLoader>.get_random_sample_1()` that provides the same required function. You will find more details in section [1.4. Checking the output](#14-checking-the-output).
 
-3. There are cases where two multiple-word NERs share the same word(s) in the sentence text. In two particular cases, each NER belongs to a different group. See section [1.3. NER labeling](#13-ner-labeling) for a detailed discussion.
+3. There are cases where two multiple-word NEs share the same word(s) in the sentence text. In two particular cases, each NE belongs to a different group. See section [1.3. NE labeling](#13-ner-labeling) for a detailed discussion.
 
 4. All assignment's requirements are followed as far as I understood them, including the requirement of output dimensions. Regarding padding, to reduce the number of padding tokens used to equalize the sequences' length, the padding tokens will be added for each batch ---in the training, evaluation, and testing stage---. To comply with the assignment requirements and to be able to experiment with the idea mentioned above, I have added some methods and attributes as follows:
 
@@ -84,11 +84,11 @@ The method `<DataLoader>.__tokenizer_w_ents(text)` is responsible for tokenizing
 
 <br />
 
-### 1.3. NER labeling
+### 1.3. NE labeling
 
-I used a BIO encoding to label the NERs. The method `_label_ner` is responsible for extracting NERs, labeling them, and returning them in a form that supports the assignment requirements.
+I used a BIO encoding to label the NEs. The method `_label_ner` is responsible for extracting NEs, labeling them, and returning them in a form that supports the assignment requirements.
 
-There are several cases where two multiple-word NERs share the same word(s) in the sentence text. For example in file `Test/Test for DDI Extraction task/DrugBank/Methyclothiazide.xml`, sentence id: `DDI-DrugBank.d736.s8`, the sentence text is:
+There are several cases where two multiple-word NEs share the same word(s) in the sentence text. For example in file `Test/Test for DDI Extraction task/DrugBank/Methyclothiazide.xml`, sentence id: `DDI-DrugBank.d736.s8`, the sentence text is:
 
 > Potentiation occurs with **ganglionic** or *peripheral adrenergic* ***blocking drugs***
 
@@ -106,7 +106,7 @@ Here, the two entities share the same tokens "blocking drugs" in ***bold italic*
 
 ```
 
-There are two special cases where the two NERs share the same words, but they belong to two different groups. As the BIO encoding cannot handle such cases, I decided to take them out. The reference to these two elements are:
+There are two special cases where the two NEs share the same words, but they belong to two different groups. As the BIO encoding cannot handle such cases, I decided to take them out. The reference to these two elements are:
 
 1. File: `DrugDrug-Interaction/Train/DrugBank/Chlorothiazide_ddi.xml`
    Sentence id: DDI-DrugBank.d46.s19
@@ -161,13 +161,13 @@ These issues are discussed in sections [1.5.2](#152-plural-entity) till [1.5.4](
 
 #### 1.5.2. Plural Entity
 
-The `<characters offsets>` in `xml` files discard the "*plur s*" in some of ner. For example in `Test/Test for DrugNER task/DrugBank/Tetracycline.xml'` the `<characters offsets>` of the ner **magnesium salicylates** is *100-119*. If the "plurals" is taken into account, the offset should be *100-**120***.
+The `<characters offsets>` in `xml` files discard the "*plur s*" in some of ne. For example in `Test/Test for DrugNER task/DrugBank/Tetracycline.xml'` the `<characters offsets>` of the ne **magnesium salicylates** is *100-119*. If the "plurals" is taken into account, the offset should be *100-**120***.
 
 When such case is spotted during parsing, the "plural s s" is taken into account and the code will discard the xml `<characters offsets>`. This is to ensure that the text could be safely assembled after tokenization.
 
 #### 1.5.3. Typo in Sentence
 
-There are missing spaces in the `<sentence text>` field, mostly missing spaces. Such issues has been discovered as the extracted ner from the `<sentence text>` using `<characters offsets>` does not align with the `<entity text>`.
+There are missing spaces in the `<sentence text>` field, mostly missing spaces. Such issues has been discovered as the extracted ne from the `<sentence text>` using `<characters offsets>` does not align with the `<entity text>`.
 
 #### 1.5.4. charOffset Miss-reference
 
@@ -254,7 +254,7 @@ Five features are selected; they are mainly linguistics features which I think t
 
 ### 2.1. PPMI
 
-I expect that most of the NERs tokens may be `unknown` for a general pertained embeddings. Several tokens are just punctuation or a single character; also, these NERs are specialized expressions that are rare to be found in a general corpus. For this reason, I decided to include the co-occurrence count for tokens, as this will embed the context information for each token. A PPMI is then calculated for the token count.
+I expect that most of the NEs tokens may be `unknown` for a general pertained embeddings. Several tokens are just punctuation or a single character; also, these NEs are specialized expressions that are rare to be found in a general corpus. For this reason, I decided to include the co-occurrence count for tokens, as this will embed the context information for each token. A PPMI is then calculated for the token count.
 
 I have investigated multiple reducing dimensions for the embeddings using the sum of variances explained by the reduced embeddings, and the results are summarized below. At 31% of the embeddings' original dimension, the principal components can explain more than 90% of the data variance.
 

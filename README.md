@@ -5,7 +5,7 @@ Name: Mohamed Zarzoura
 - [1. Notes on Part 1](#1-notes-on-part-1)
   - [1.1. Important notices](#11-important-notices)
   - [1.2. Tokenization](#12-tokenization)
-  - [1.3. NE labeling](#13-ner-labeling)
+  - [1.3. NE labeling](#13-ne-labeling)
   - [1.4. Checking the output](#14-checking-the-output)
   - [1.5. Issues with data](#15-issues-with-data)
     - [1.5.1. Introduction](#151-introduction)
@@ -29,7 +29,7 @@ Name: Mohamed Zarzoura
 
 2. Due to the way that I choose to tokenize sentences, the method `<DataLoader>.get_random_sample()` does not provide the expected output. I wrote another method `<DataLoader>.get_random_sample_1()` that provides the same required function. You will find more details in section [1.4. Checking the output](#14-checking-the-output).
 
-3. There are cases where two multiple-word NEs share the same word(s) in the sentence text. In two particular cases, each NE belongs to a different group. See section [1.3. NE labeling](#13-ner-labeling) for a detailed discussion.
+3. There are cases where two multiple-word NEs share the same word(s) in the sentence text. In two particular cases, each NE belongs to a different group. See section [1.3. NE labeling](#13-ne-labeling) for a detailed discussion.
 
 4. All assignment's requirements are followed as far as I understood them, including the requirement of output dimensions. Regarding padding, to reduce the number of padding tokens used to equalize the sequences' length, the padding tokens will be added for each batch ---in the training, evaluation, and testing stage---. To comply with the assignment requirements and to be able to experiment with the idea mentioned above, I have added some methods and attributes as follows:
 

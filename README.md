@@ -61,7 +61,7 @@ Name: Mohamed Zarzoura
 5. After the submission (during solving assignement-2), I realized the following issues:
    
    1. **PPMI calculation**: the values are calculated based on the splitted corpus, while the ppmi should be calculated based on the whole corpus.
-   2. **`get_y`**: the method add pad tokens based on the max length in the split dataset itself, not based on the max length in the whole dataset.
+   2. **`get_y` and `extract_features`**: `get_y` add pad tokens based on the max length in the split dataset itself. While `extract_features` add pads based on the max sequence length in the whole dataset
    
 <br />
 

@@ -268,6 +268,8 @@ I have investigated multiple reducing dimensions for the embeddings using the su
 
 The PPMI may be not considered as a feature rather that a way to represent a token in numerical way to be used by NN. Still not sure how to use them along with a pertained embeddings which are trained on more bigger corpus.
 
+**After submision** I realized that there is a problem with the PPMI calculation, the values are calculated based on the splitted corpus, while the ppmi should be calculated based on the whole corpus.
+
 The PPMI calculation can be found in this [tutorial](https://github.com/henrywoo/MyML/blob/master/Copy_of_nlu_2.ipynb), the tutorial is licensed under the Apache License, Version 2.0.
 
 ## 3. Notes on Part Bonus

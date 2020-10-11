@@ -58,6 +58,11 @@ Name: Mohamed Zarzoura
 
       If activated, the `extract_features` function returns the features in the dimension required by the assignment. Otherwise, the features are without paddings along with PPMI embeddings for each token in dataset vocabulary. More details are in section [2. Notes on Part 2](#2-notes-on-part-2).
 
+5. After the submission (during solving assignement-2), I realized the following issues:
+   
+   1. **PPMI calculation**: the values are calculated based on the splitted corpus, while the ppmi should be calculated based on the whole corpus.
+   2. **`get_y`**: the method add pad tokens based on the max length in the split dataset itself, not based on the max length in the whole dataset.
+   
 <br />
 
 ### 1.2. Tokenization
@@ -267,8 +272,6 @@ I have investigated multiple reducing dimensions for the embeddings using the su
 | 7000                       | 71.63 %    | 100.00 %                        |
 
 The PPMI may be not considered as a feature rather that a way to represent a token in numerical way to be used by NN. Still not sure how to use them along with a pertained embeddings which are trained on more bigger corpus.
-
-**After submision** I realized that there is a problem with the PPMI calculation, the values are calculated based on the splitted corpus, while the ppmi should be calculated based on the whole corpus.
 
 The PPMI calculation can be found in this [tutorial](https://github.com/henrywoo/MyML/blob/master/Copy_of_nlu_2.ipynb), the tutorial is licensed under the Apache License, Version 2.0.
 

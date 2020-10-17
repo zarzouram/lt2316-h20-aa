@@ -22,26 +22,25 @@ from .custom_classes import Vocabulary, DatasetObject
 
 class DataLoaderBase:
 
-    #### DO NOT CHANGE ANYTHING IN THIS CLASS ### !!!!
+    # DO NOT CHANGE ANYTHING IN THIS CLASS ### !!!!
 
-    def __init__(self, data_dir:str, device=None):
+    def __init__(self, data_dir: str, device=None):
         self._parse_data(data_dir)
         assert list(self.data_df.columns) == [
-                                                "sentence_id",
-                                                "token_id",
-                                                "char_start_id",
-                                                "char_end_id",
-                                                "split"
-                                                ]
+            "sentence_id",
+            "token_id",
+            "char_start_id",
+            "char_end_id",
+            "split"
+        ]
 
         assert list(self.ner_df.columns) == [
-                                                "sentence_id",
-                                                "ner_id",
-                                                "char_start_id",
-                                                "char_end_id",
-                                                ]
+            "sentence_id",
+            "ner_id",
+            "char_start_id",
+            "char_end_id",
+        ]
         self.device = device
-        
 
     def get_random_sample(self):
         # DO NOT TOUCH THIS
@@ -70,7 +69,6 @@ class DataLoaderBase:
 
         # print(self.files_pathes[sentence_id])
         return sample.rstrip()
-
 
 
 class DataLoader(DataLoaderBase):
@@ -139,20 +137,7 @@ class DataLoader(DataLoaderBase):
         ners_sentences_id = []
         ners_char_starts_id = []
         ners_char_ends_id = []
-        sentences_takeout_id = ["DDI-DrugBank.d238.s13",
-                                "DDI-DrugBank.d238.s17",
-                                "DDI-DrugBank.d238.s18",
-                                "DDI-DrugBank.d238.s20",
-                                "DDI-DrugBank.d238.s23",
-                                "DDI-DrugBank.d216.s16",
-                                "DDI-DrugBank.d270.s30",
-                                "DDI-DrugBank.d270.s49",
-                                "DDI-MedLine.d76.s9",
-                                "DDI-DrugBank.d325.s7",
-                                "DDI-DrugBank.d17.s6",
-                                "DDI-MedLine.d137.s2",
-                                "DDI-DrugBank.d54.s13",]
-        
+
         # Get all xml files recursively
         allfiles = Path(data_dir).rglob("*.xml")
 
@@ -171,10 +156,6 @@ class DataLoader(DataLoaderBase):
             # traverse the xml tree
             for sentence_e in root:
 
-                sentence_id = sentence_e.get("id")
-                if sentence_id in sentences_takeout_id:
-                    continue
-                
                 # get sentence from xml
                 # Add start and stop sequence for each sentence
                 sentence_text = sentence_e.get("text").strip()
@@ -193,8 +174,8 @@ class DataLoader(DataLoaderBase):
                 # get sentence id from xml
                 # get the "split" field from the directory name, just under the data_dir
                 # make two lists from "sentences_id" and "split" fields. The length = to the length of the tokens list
-                sentences_id.extend([sentence_id]*len(mytokens))
-                self.files_pathes[sentence_id] = myfile
+                sentences_id.extend([sentence_e.get("id")]*len(mytokens))
+                self.files_pathes[sentence_e.get("id")] = myfile
 
                 tokens_id.extend(mytokens_id)
 
@@ -335,45 +316,65 @@ class DataLoader(DataLoaderBase):
         return ner_start, ner_end, ner_labels
 
     def __get_sequence(self, tokens_df, labels_df):
-        # copy dfs
-        labels_df_copy = labels_df.copy()
-        tokens_df_copy = tokens_df.copy()
-        # construct loc tuple = (char_start_id, char_start_id), then remove the char_start_id, char_start_id column from the df
-        tokens_df_copy["loc"] = tokens_df_copy[["char_start_id",
-                                                "char_end_id"]].apply(lambda x: tuple(x), axis=1)
-        tokens_df_copy.drop(
-            ["char_start_id",	"char_end_id"], inplace=True, axis=1)
+        # Not effecient
 
-        labels_df_copy["loc"] = labels_df_copy[["char_start_id",
-                                                "char_end_id"]].apply(lambda x: tuple(x), axis=1)
-        labels_df_copy.drop(
-            ["char_start_id",	"char_end_id"], inplace=True, axis=1)
+        # required fields for dataset
+        seq_tokens = []
+        seq_labels = []
+        seq_loc_id = []
+        sentence_id = []
+        seq_len = []
 
         O_label = self.ner_vocab.__getitem__("O")
+        # Group data by sentence_id
+        # Split dataframe by sentence_id
+        # set sentence_id field to be the index, then get a list of sent_id
+        # to reseve sentence_id order make index as column and sort by it.
+        # tokens_df_copy.reset_index(inplace=True)
+        # tokens_df_copy.set_index(keys=["sentence_id"], drop=False, inplace=True)
+        # tokens_df_copy.sort_values(by=["index"], inplace=True)
+        # compare_df(tokens_df_copy, tokens_df)
 
-        # merge two dfs based on the sentence_id and loc columns
-        # A new column ner_id from the labels_df will have NaN if the sentence_id and loc are not found in the tokens_df
-        # replace those NaNs with O_label
-        sequence_df = tokens_df_copy.merge(
-            labels_df_copy, on=["sentence_id", "loc"], how="left")
-        sequence_df = sequence_df.assign(
-            labels=lambda x: x.ner_id.fillna(O_label))
-        
-        # do some type casting
-        sequence_df.astype({"token_id": np.int64, "labels": np.int64})
-        sequence_df.drop(["split", "ner_id"], inplace=True, axis=1)
+        # construct sequence of tokens and labels for each sentence
+        sents_id = tokens_df["sentence_id"].to_numpy()
+        _, idx = np.unique(sents_id, return_index=True)
+        sents_id = sents_id[np.sort(idx)]
+        # for sent_id, data in tokens_groups.items():
+        for sent_id in sents_id:
+            # Get sequence of tokens for each sentence, then
+            # initialize sequence of labels with the same length of tokens sequence, all labels is equal to "O"
+            data = tokens_df.loc[tokens_df["sentence_id"] ==
+                                 sent_id].values[:, 1:]
+            tokens = data[:, 0]
+            labels = [O_label] * len(tokens)
+            locs = list(zip(data[:, 1], data[:, 2]))  # (strat char, end char)
 
-        # group dfs by sentence_id and aggregate to form a list for each column values
-        sequence_df = sequence_df.groupby(["sentence_id"], as_index=False)[
-            "token_id",	"loc",	"labels"].agg(lambda x: list(x))
-        
-        # add new column that hold a lengthe for each list
-        sequence_df["length"] = sequence_df["token_id"].apply(lambda x: len(x))
-        
-        # change column names and convert to dict. For complience: needed as I change this code after i have finished
-        sequence_df.columns = ["sent_id", "tokens", "loc", "labels", "length"]
-        seq_data = sequence_df.to_dict(orient="list")
-        
+            # the seq has ner
+            # if sent_id in ners_groups:
+            ner_df = labels_df.loc[labels_df["sentence_id"] == sent_id]
+            if not ner_df.empty:
+                # get ner data for each sentence, get tuples for strat and end chars for each ner
+                ners_data = ner_df.values
+                ner_locs = list(zip(ners_data[:, 2], ners_data[:, 3]))
+                # Get ners' location in the sequence by matching the loc tuple of ner with the loc tuple of tokens, then
+                # update the labels sequence by using the extracted ners' location
+                idx = [i for i, loc in enumerate(locs) if loc in ner_locs]
+                assert len(idx) == len(ner_locs)
+                #  update labels
+                for j, id_ in enumerate(idx):
+                    labels[id_] = ners_data[j, 1]
+
+            # save values
+            seq_tokens.append(tokens.tolist())
+            seq_labels.append(labels)
+            seq_loc_id.append(locs)
+            sentence_id.append(sent_id)
+            seq_len.append(tokens.shape[0])
+
+        # construct dict
+        seq_data = {"tokens": seq_tokens, "labels": seq_labels,
+                    "loc": seq_loc_id, "sent_id": sentence_id, "length": seq_len}
+
         return seq_data
 
     # def __group_arr(self, arr):
@@ -385,18 +386,18 @@ class DataLoader(DataLoaderBase):
 
     #     return data_group
 
-    # def load_iter(self):
+    def load_iter(self):
 
-    #     train_seq_df = pd.DataFrame(self.train)
-    #     val_seq_df = pd.DataFrame(self.val)
-    #     test_seq_df = pd.DataFrame(self.test)
+        train_seq_df = pd.DataFrame(self.train)
+        val_seq_df = pd.DataFrame(self.val)
+        test_seq_df = pd.DataFrame(self.test)
 
-    #     # create pytorch dataset
-    #     train_pyt_ds = DatasetObject(train_seq_df)
-    #     val_pyt_ds = DatasetObject(val_seq_df)
-    #     test_pyt_ds = DatasetObject(test_seq_df)
+        # create pytorch dataset
+        train_pyt_ds = DatasetObject(train_seq_df)
+        val_pyt_ds = DatasetObject(val_seq_df)
+        test_pyt_ds = DatasetObject(test_seq_df)
 
-    #     return train_pyt_ds, val_pyt_ds, test_pyt_ds
+        return train_pyt_ds, val_pyt_ds, test_pyt_ds
 
     def get_y(self):
         # Should return a tensor containing the ner labels for all samples in each split.
@@ -406,27 +407,26 @@ class DataLoader(DataLoaderBase):
         # get data
 
         # pad sequences to the max length
-        max_len = self.max_sample_length
         pad_label = self.ner_vocab.__getitem__(pad_token)
         train_seq_label =  \
             pad_post_sequence(self.train["labels"],
-                              max_len,
+                              self.train["length"],
                               pad_label)
         val_seq_label =  \
             pad_post_sequence(self.val["labels"],
-                              max_len,
+                              self.val["length"],
                               pad_label)
         test_seq_label =  \
             pad_post_sequence(self.test["labels"],
-                              max_len,
+                              self.test["length"],
                               pad_label)
         # convert to tensors then save in device
         train_seq_label = torch.tensor(
-            train_seq_label, dtype=torch.long, device=self.device)
+            train_seq_label, dtype=torch.int16, device=self.device)
         val_seq_label = torch.tensor(
-            val_seq_label, dtype=torch.long, device=self.device)
+            val_seq_label, dtype=torch.int16, device=self.device)
         test_seq_label = torch.tensor(
-            test_seq_label, dtype=torch.long, device=self.device)
+            test_seq_label, dtype=torch.int16, device=self.device)
 
         return train_seq_label, val_seq_label, test_seq_label
 
@@ -680,10 +680,11 @@ class DataLoader(DataLoaderBase):
     #         dict_reform[key] = temp
     #     return dict_reform
 
-def pad_post_sequence(seqs, max_len, pad_char):
+def pad_post_sequence(seqs, lens, pad_char):
     seq_pad = []
-    for seq in seqs:
-        len_diff = max_len - len(seq)
+    max_len = max(lens)
+    for seq, len_ in zip(seqs, lens):
+        len_diff = max_len - len_
         padding = [pad_char] * len_diff
 
         seq_copy = seq[:]

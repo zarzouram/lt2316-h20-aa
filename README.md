@@ -14,7 +14,6 @@ Name: Mohamed Zarzoura
     - [1.5.4. charOffset Miss-reference](#154-charoffset-miss-reference)
     - [1.5.5. Summary of issues](#155-summary-of-issues)
 - [2. Notes on Part 2](#2-notes-on-part-2)
-  - [2.1. PPMI](#21-ppmi)
 - [3. Notes on Part Bonus](#3-notes-on-part-bonus)
 
 <br />
@@ -25,13 +24,16 @@ Name: Mohamed Zarzoura
 
 ### 1.1. Important notices
 
-1. PLease run the code using the XML database located under my user folder `/home/guszarzmo@GU.GU.SE/Corpora/DrugDrug-Interaction'. I have made several changes to the files to handle some issues. These issues are discussed in Section [1.5. Issues with data](#15-issues-with-data)
+1. I used pytorch-nlp package `pip install pytorch-nlp --user` to be able to use GLove pretrained word vectors.
 
-2. Due to the way that I choose to tokenize sentences, the method `<DataLoader>.get_random_sample()` does not provide the expected output. I wrote another method `<DataLoader>.get_random_sample_1()` that provides the same required function. You will find more details in section [1.4. Checking the output](#14-checking-the-output).
+2. I installed `venn` by `pip install venn --user`, to draw the venn diagram.
 
-3. There are cases where two multiple-word NERs share the same word(s) in the sentence text. In two particular cases, each NER belongs to a different group. See section [1.3. NER labeling](#13-ner-labeling) for a detailed discussion.
+3. There are some issues in the data files and they are discussed in Section [1.5. Issues with data](#15-issues-with-data)
 
-4. All assignment's requirements are followed as far as I understood them, including the requirement of output dimensions. Regarding padding, to reduce the number of padding tokens used to equalize the sequences' length, the padding tokens will be added for each batch ---in the training, evaluation, and testing stage---. To comply with the assignment requirements and to be able to experiment with the idea mentioned above, I have added some methods and attributes as follows:
+4. The method `<DataLoader>.get_random_sample()` does not provide the expected output. This is because my `char_end_id` is equal to `len(token)` not `len(token)-1`. I did not change the code as I am not allowed to change it.
+   Also, I wrote another method `<DataLoader>.get_random_sample_1()` that provides the same required function. You will find more details in section [1.4. Checking the output](#14-checking-the-output).
+
+5. I have added some methods and attributes as follows:
 
    1. `<DataLoader>.train`, `<DataLoader>.val` and ``<DataLoader>.test`:
 
@@ -47,16 +49,6 @@ Name: Mohamed Zarzoura
       `<DataLoader>.__get_data_xml(myfile, sent_id)`
 
       These methods are used to check the parsing of data. See [1.4. Checking the output](#14-checking-the-output).
-
-   4. `<DataLoader>.load_iter(self)`\
-      `class DatasetObject(torch.utils.data.Dataset)`\
-      `class DatasetField(DatasetObject)`
-
-      Used to create torch dataset from `<DataLoader>.train`, `<DataLoader>.val` and `<DataLoader>.test`, discussed in item 1 above, using `torch.utils.data.Dataset`. I can batch and pad the sequences by using `torch.utils.data.DataLoader`.
-
-   5. a flag `assignment_1=True`
-
-      If activated, the `extract_features` function returns the features in the dimension required by the assignment. Otherwise, the features are without paddings along with PPMI embeddings for each token in dataset vocabulary. More details are in section [2. Notes on Part 2](#2-notes-on-part-2).
 
 <br />
 
@@ -106,7 +98,7 @@ Here, the two entities share the same tokens "blocking drugs" in ***bold italic*
 
 ```
 
-There are two special cases where the two NERs share the same words, but they belong to two different groups. As the BIO encoding cannot handle such cases, I decided to take them out. The reference to these two elements are:
+There are two special cases where the two NERs share the same words, but they belong to two different groups. As the BIO encoding cannot handle such cases. The reference to these two elements are:
 
 1. File: `DrugDrug-Interaction/Train/DrugBank/Chlorothiazide_ddi.xml`
    Sentence id: DDI-DrugBank.d46.s19
@@ -118,9 +110,9 @@ There are two special cases where the two NERs share the same words, but they be
 
 ### 1.4. Checking the output
 
-The provided method `<DataLoader>.get_random_sample()` does not provide the expected output. I am not sure why this happens. I speculate that the logic is based on assuming that the tokens are being split by spaces. In my case, a word ---which its boundary is two spaces--- may consist of multiple tokens with multiple labels. Thus it will be hard to print all of them in one line. So, I wrote another method `<DataLoader>.get_random_sample_1()` that combines the multiple tokens to form units that their boundary are a space, combine their labels by "|" and print all information in a table. Also, for reference, the data from the `XML` file is also printed.
+The provided method `<DataLoader>.get_random_sample()` does not provide the expected output. The token's `char_end_id` is equal to the length of token, while the function expect that `char_end_id` is equal to length of token - 1.  Also, I wrote another method `<DataLoader>.get_random_sample_1()` that combines the multiple tokens to form units that their boundary are a space, combine their labels by "|" and print all information in a table. Also, for reference, the data from the `XML` file is also printed.
 
-A part of the output shown in `run.ipynb` is shown below. In the "tokens" table, in row 20, there are three tokens `[ amiloride, ), ,]` that have three labels. The parsing is then can be compared with information extracted from the `XML` file below.
+For example, in the "tokens" table, in row 20, there are three tokens `[ amiloride, ), ,]` that have three labels. The parsing is then can be compared with information extracted from the `XML` file below.
 
 ```text
     --- Data parsed ---
@@ -244,32 +236,8 @@ Files:
 
 ## 2. Notes on Part 2
 
-Five features are selected; they are mainly linguistics features which I think they may have information :
-
-1. POS tag of each token
-2. Dependency tag of each token
-3. The stem of each token. I tried to get the suffix and a prefix of each token but I did not find a library that can extract the prefix or multiple suffixes.
-4. The head of the current token in the dependency graph.
-5. The head's POS tag of the current token in the dependency graph.
-
-### 2.1. PPMI
-
-I expect that most of the NERs tokens may be `unknown` for a general pertained embeddings. Several tokens are just punctuation or a single character; also, these NERs are specialized expressions that are rare to be found in a general corpus. For this reason, I decided to include the co-occurrence count for tokens, as this will embed the context information for each token. A PPMI is then calculated for the token count.
-
-I have investigated multiple reducing dimensions for the embeddings using the sum of variances explained by the reduced embeddings, and the results are summarized below. At 31% of the embeddings' original dimension, the principal components can explain more than 90% of the data variance.
-
-| The reduced<br />Dimension | Reducing % | Sum of variances<br />explained |
-| :---:                      | :---:      | :---:                           |
-| 100                        |  1.02 %    | 16.36 %                         |
-| 500                        |  5.12 %    | 44.50 %                         |
-| 1000                       | 10.23 %    | 64.22 %                         |
-| 3000                       | 30.70 %    | 93.05 %                         |
-| 7000                       | 71.63 %    | 100.00 %                        |
-
-The PPMI may be not considered as a feature rather that a way to represent a token in numerical way to be used by NN. Still not sure how to use them along with a pertained embeddings which are trained on more bigger corpus.
-
-The PPMI calculation can be found in this [tutorial](https://github.com/henrywoo/MyML/blob/master/Copy_of_nlu_2.ipynb), the tutorial is licensed under the Apache License, Version 2.0.
+Features is the tokens sequence to be used as input to an LSTM. Also the function `get_input_embeddings` return a tensor that holds the glove representation for each token in the dataset.
 
 ## 3. Notes on Part Bonus
 
-No notes
+I used venn to draw the venn diagram. I installed venn by pip install venn --user

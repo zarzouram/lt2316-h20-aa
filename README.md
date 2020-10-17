@@ -3,9 +3,9 @@
 Name: Mohamed Zarzoura
 
 - [1. Notes on Part 1](#1-notes-on-part-1)
-  - [1.1. Important notices](#11-important-notices)
+  - [1.1. Important notes](#11-important-notes)
   - [1.2. Tokenization](#12-tokenization)
-  - [1.3. NER labeling](#13-ner-labeling)
+  - [1.3. NE labeling](#13-ne-labeling)
   - [1.4. Checking the output](#14-checking-the-output)
   - [1.5. Issues with data](#15-issues-with-data)
     - [1.5.1. Introduction](#151-introduction)
@@ -22,7 +22,7 @@ Name: Mohamed Zarzoura
 
 ## 1. Notes on Part 1
 
-### 1.1. Important notices
+### 1.1. Important notes
 
 1. I used pytorch-nlp package `pip install pytorch-nlp --user` to be able to use GLove pretrained word vectors.
 
@@ -76,11 +76,11 @@ The method `<DataLoader>.__tokenizer_w_ents(text)` is responsible for tokenizing
 
 <br />
 
-### 1.3. NER labeling
+### 1.3. NE labeling
 
-I used a BIO encoding to label the NERs. The method `_label_ner` is responsible for extracting NERs, labeling them, and returning them in a form that supports the assignment requirements.
+I used a BIO encoding to label the NEs. The method `_label_ner` is responsible for extracting NEs, labeling them, and returning them in a form that supports the assignment requirements.
 
-There are several cases where two multiple-word NERs share the same word(s) in the sentence text. For example in file `Test/Test for DDI Extraction task/DrugBank/Methyclothiazide.xml`, sentence id: `DDI-DrugBank.d736.s8`, the sentence text is:
+There are several cases where two multiple-word NEs share the same word(s) in the sentence text. For example in file `Test/Test for DDI Extraction task/DrugBank/Methyclothiazide.xml`, sentence id: `DDI-DrugBank.d736.s8`, the sentence text is:
 
 > Potentiation occurs with **ganglionic** or *peripheral adrenergic* ***blocking drugs***
 
@@ -153,13 +153,13 @@ These issues are discussed in sections [1.5.2](#152-plural-entity) till [1.5.4](
 
 #### 1.5.2. Plural Entity
 
-The `<characters offsets>` in `xml` files discard the "*plur s*" in some of ner. For example in `Test/Test for DrugNER task/DrugBank/Tetracycline.xml'` the `<characters offsets>` of the ner **magnesium salicylates** is *100-119*. If the "plurals" is taken into account, the offset should be *100-**120***.
+The `<characters offsets>` in `xml` files discard the "*plur s*" in some of ne. For example in `Test/Test for DrugNER task/DrugBank/Tetracycline.xml'` the `<characters offsets>` of the ne **magnesium salicylates** is *100-119*. If the "plurals" is taken into account, the offset should be *100-**120***.
 
 When such case is spotted during parsing, the "plural s s" is taken into account and the code will discard the xml `<characters offsets>`. This is to ensure that the text could be safely assembled after tokenization.
 
 #### 1.5.3. Typo in Sentence
 
-There are missing spaces in the `<sentence text>` field, mostly missing spaces. Such issues has been discovered as the extracted ner from the `<sentence text>` using `<characters offsets>` does not align with the `<entity text>`.
+There are missing spaces in the `<sentence text>` field, mostly missing spaces. Such issues has been discovered as the extracted ne from the `<sentence text>` using `<characters offsets>` does not align with the `<entity text>`.
 
 #### 1.5.4. charOffset Miss-reference
 
